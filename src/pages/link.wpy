@@ -1,0 +1,80 @@
+<!--suppress ALL -->
+<template>
+  <view class="container">
+    <web-view src="{{url}}" bindmessage="getMsg"></web-view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import baseMixin from '../mixins/base'
+
+  export default class Link extends wepy.page {
+    config = {
+      navigationBarTitleText: '',
+      navigationBarBackgroundColor: '#2896ff', // 导航栏背景颜色
+      navigationBarTextStyle: 'white', // 导航栏标题颜色，仅支持 black/white
+      backgroundColor: '', // 窗口的背景色
+      backgroundTextStyle: 'light', // 下拉背景字体、loading 图的样式，仅支持 dark/light
+      enablePullDownRefresh: false, // 是否开启下拉刷新
+      disableScroll: false, // 设置为 true 则页面整体不能上下滚动
+      onReachBottomDistance: 50 // 页面上拉触底事件触发时距页面底部距离，单位为px
+    }
+
+    components = {
+    }
+
+    data = {
+      url: ''
+    }
+
+    // 引入混合
+    mixins = [baseMixin]
+
+    computed = {
+      now() {
+        return +new Date()
+      }
+    }
+
+    watch = {
+    }
+
+    events = {
+    }
+
+    methods = {
+      getMsg (e) {
+        console.log(e, e.detail)
+      }
+    }
+
+    async onLoad(options) {
+      let url = decodeURIComponent(options.url) // 对链接进行解码
+      this.url = url
+    }
+
+    // 设置转发参数
+    onShareAppMessage (options) {
+      let url = options.webViewUrl
+      return {
+        title: this.shareTitle,
+        path: 'pages/link?url=' + encodeURIComponent(url),
+        imageUrl: this.shareImage,
+        success: function(res) {
+          // 转发成功
+          console.log('转发成功', res)
+        },
+        fail: function(res) {
+          // 转发失败
+        },
+        complete: function (res) {
+        }
+      }
+    }
+  }
+</script>
+<style lang="scss" scoped>
+  page{
+    background-color: #0BB20C;
+  }
+</style>

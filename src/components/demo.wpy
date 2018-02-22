@@ -1,0 +1,78 @@
+<template>
+  <view class="container">
+    <slot name="test"></slot>
+    <button class="weui-btn" type="primary" @tap="plus" size="mini">  +  </button>
+    <button class="weui-btn" type="primary" @tap="minus" size="mini">  -  </button>
+    <text class="count" :class="{red: num > 55, green: num < 45}"> {{num}} </text>
+    <button class="weui-btn" type="primary" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" size="mini">获取手机号</button>
+    <text>{{phoneinfo}}</text>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Counter extends wepy.component {
+    props = {
+      num: {
+        type: [Number, String],
+        coerce: function (v) {
+          return +v
+        },
+        default: 50,
+        twoWay: true // 数据是否双向传递
+      }
+    }
+
+    data = {
+      phoneinfo: ''
+    }
+
+    components = {
+    }
+
+    events = {
+      'index-broadcast': (...args) => {
+        let $event = args[args.length - 1]
+        console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      }
+    }
+
+    watch = {
+      num (curVal, oldVal) {
+        console.log(`旧值：${oldVal}，新值：${curVal}`)
+      }
+    }
+
+    methods = {
+      plus (...args) {
+        // 参数传递
+        console.log(args[0], args[1])
+        this.num = this.num + 1
+        // this.$name 当前组件名称
+        console.log(this.$name + ' plus tap')
+        // 组件之间通信：由子组件发起，事件向上（父组件）逐级传播
+        this.$emit('index-emit')
+      },
+      minus () {
+        this.num = this.num - 1
+        console.log(this.$name + ' minus tap')
+      },
+      getPhoneNumber (e) {
+        console.log(e.detail)
+        console.log(e.detail.iv)
+        console.log(e.detail.encryptedData)
+        this.phoneinfo = e.detail.encryptedData
+      }
+    }
+  }
+</script>
+<style lang="scss">
+  .container{
+    .red{
+      color: red;
+    }
+    .green{
+      color: green;
+    }
+  }
+</style>

@@ -1,0 +1,74 @@
+<template>
+  <view class="service">
+    服务
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import baseMixin from '../mixins/base'
+
+  export default class Service extends wepy.page {
+    config = {
+      navigationBarTitleText: '',
+      navigationBarBackgroundColor: '#2896ff', // 导航栏背景颜色
+      navigationBarTextStyle: 'white', // 导航栏标题颜色，仅支持 black/white
+      backgroundColor: '', // 窗口的背景色
+      backgroundTextStyle: 'light', // 下拉背景字体、loading 图的样式，仅支持 dark/light
+      enablePullDownRefresh: false, // 是否开启下拉刷新
+      disableScroll: false, // 设置为 true 则页面整体不能上下滚动
+      onReachBottomDistance: 50 // 页面上拉触底事件触发时距页面底部距离，单位为px
+    }
+
+    components = {
+    }
+
+    // 引入混合
+    mixins = [baseMixin]
+
+    data = {
+    }
+
+    computed = {
+      now() {
+        return +new Date()
+      }
+    }
+
+    watch = {
+    }
+
+    events = {}
+
+    methods = {
+    }
+
+    async onLoad(options) {
+      this.init()
+    }
+
+    async init (store) {
+    }
+
+    // 设置转发参数
+    onShareAppMessage (res) {
+      return {
+        title: this.shareTitle,
+        path: 'pages/service',
+        imageUrl: this.shareImage,
+        success: function(res) {
+          // 转发成功
+          console.log('转发成功', res)
+        },
+        fail: function(res) {
+          // 转发失败
+        },
+        complete: function (res) {
+
+        }
+      }
+    }
+  }
+</script>
+<style lang="scss">
+</style>

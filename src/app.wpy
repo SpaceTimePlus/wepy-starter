@@ -1,0 +1,86 @@
+<style lang="less">
+@import './assets/style/weui.less';
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+page{
+  background-color: #EFEFF4;
+}
+</style>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+
+export default class extends wepy.app {
+  // 配置信息
+  config = {
+    // 页面列表
+    pages: [
+      'pages/index', // 首页
+      'pages/service', // 服务
+      'pages/home', // 我的
+      'pages/link' // 链接
+    ],
+    // window 参数设置
+    window: {
+      backgroundTextStyle: 'light', // 下拉背景字体、loading 图的样式，仅支持 dark/light
+      backgroundColor: '#fff', // 窗口的背景颜色
+      navigationBarBackgroundColor: '#2896ff', // 导航栏背景颜色
+      navigationBarTitleText: '房产门店', // 导航栏标题文字内容
+      navigationBarTextStyle: '#fff', // 导航栏标题颜色
+      enablePullDownRefresh: true, // 是否开启下拉刷新
+      onReachBottomDistance: 50 // 页面上拉触底事件触发时距页面底部距离，单位为px
+    },
+    // 网络超时时间
+    networkTimeout: {
+      request: 10000
+    },
+    tabBar: {
+      color: '#888888',
+      selectedColor: '#2896ff',
+      borderStyle: 'black',
+      position: 'bottom',
+      list: [{
+        pagePath: 'pages/index',
+        text: '首页',
+        iconPath: './assets/image/house.png',
+        selectedIconPath: './assets/image/house_select.png'
+      }, {
+        pagePath: 'pages/service',
+        text: '服务',
+        iconPath: './assets/image/service.png',
+        selectedIconPath: './assets/image/service_select.png'
+      }, {
+        pagePath: 'pages/home',
+        text: '我的',
+        iconPath: './assets/image/home.png',
+        selectedIconPath: './assets/image/home_select.png'
+      }]
+    }
+  }
+
+  globalData = {
+  }
+
+  constructor () {
+    super()
+    // 引入插件
+    this.use('requestfix')
+    this.use('promisify')
+  }
+
+  async onLaunch() {
+    // 小程序启动之后 触发
+    console.log('start program')
+    // 清理本地缓存
+    // wepy.clearStorageSync()
+    // 重启小程序后，清除附近门店及地理位置信息，重新定位。
+    wepy.removeStorageSync('store')
+    wepy.removeStorageSync('location')
+  }
+}
+</script>
